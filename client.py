@@ -65,36 +65,3 @@ if do == '2':
             msg_rec = msgFromServer[0]
             print(msg_rec)
        
-if do == '3':
-    uname_d = input("Enter your username :")
-    password_d = input("Enter your password :")
-    msg = "3" + "&" + uname_d + "&" + password_d
-    send_msg(msg)
-    while True:
-      
-        msgFromServer = clientSocket.recvfrom(1024)
-        msg_rec = msgFromServer[0]
-        print(msg_rec)
-try:
-     
-        print("(Shtyp EXIT per t'u shkeputur nga Serveri)")
-        method = input()
-        if len(method) > bufferSize:
-         print("Kerkesa nuk duhet te jete me e madhe se 128 karaktere!")
-        if not method:
-         print("Ju lutem shkruani kerkesen")
-  
-        if method.upper() == 'EXIT':
-            print("Keni vendosur te shkeputni lidhjen me server.")
-            procesi = False
-        elif method == '' :
-            print("Komande jo valide. Vazhdo me kerkese tjeter.")
-            print("Vazhdo me kerkese ose shkruaj EXIT per dalje.")
-        else:
-            clientSocket.sendto(str.encode(method), (serverName, serverPort))
-            serverAnswerByte = clientSocket.recvfrom(bufferSize)
-            serverAnswer = serverAnswerByte[0].decode("utf-8")
-            print(serverAnswer)
-           
-except TimeoutError:
-    print("Serveri u vonua per t'u pergjigjur andaj lidhja u mbyll!")
