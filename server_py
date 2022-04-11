@@ -65,3 +65,43 @@ def search(a):
      except:
          msg_reply = "failure"
          send_to_client(msg_reply)
+
+def entry(a,b,c,d,e,f):
+    try:
+        session=open("data.txt",'a')
+        session.write(a+"&"+b+"&"+c+"&"+d+"&"+e+"&"+f+"\n")
+        session.close()
+        msg_reply = "success"
+        send_to_client(msg_reply)
+    except:
+        msg_reply = "failure"
+        send_to_client(msg_reply)
+    
+
+
+
+while True:
+
+        methodByte, client_address = serverSocket.recvfrom(128)
+
+        method = methodByte.decode("utf-8")
+
+        print("Serveri u lidh me klientin " + client_address[0] + " me port "+ str(client_address[1]) +"\n")
+
+        try:
+                        
+            bytesAddressPair = serverSocket.recvfrom(bufferSize)
+            message = bytesAddressPair[0]
+            address = bytesAddressPair[1]
+            clientMsg = format(message)
+            clientIP = format(address)
+            msg_recieved=clientMsg.split("&")
+            if msg_recieved[0]=="b'1":
+                entry(msg_recieved[1],msg_recieved[2],msg_recieved[3],msg_recieved[4],msg_recieved[5],msg_recieved[6][:-1])
+            elif msg_recieved[0]=="b'2":
+                search(msg_recieved[2][:-1])
+            elif msg_recieved[0]=="b'3":
+                delete(msg_recieved[1],msg_recieved[2][:-1])
+        
+        except ConnectionResetError:
+          print("Serveri u shkeput me klient!")
