@@ -1,0 +1,67 @@
+import socket
+import sys
+
+serverAddress = 'localhost'
+port = 14000
+serverSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+bufferSize = 2048
+
+try:
+
+    serverSocket.bind((serverAddress, port))
+
+except socket.error:
+    print("Startimi i serverit ka deshtuar!")
+    sys.exit()
+
+print('Serveri eshte gati te pranoi kerkesat:' +"\n")
+
+def IP(address):
+
+    return address[0]
+
+
+def NRPORTIT(address):
+
+    return str(address[1])
+
+def send_to_client(a):
+   
+    bytesToSend = str.encode(a)
+    serverSocket.sendto(bytesToSend, client_address)
+
+
+def delete(a,b):
+    try:
+        session = open('data.txt', 'r')
+        lines = session.readlines()
+        session.close()
+        for line in lines:
+            if a in line and b in line:
+                lines.remove(line)
+        session_2 = open('data.txt', 'w')
+        for line in lines:
+            session_2.write(line)
+        session_2.close()
+        send_to_client("success")
+
+    except:
+        msg_reply = "failure"
+        send_to_client(msg_reply)
+
+
+def search(a):
+     try:
+        session=open("data.txt",'r')
+        for x in session:
+            if a in x:
+                y=x.split("&")
+                del y[-1]
+                p=""
+                for l in y:
+                    p=p+l
+                    p=p+"&"
+                send_to_client(p)
+     except:
+         msg_reply = "failure"
+         send_to_client(msg_reply)
